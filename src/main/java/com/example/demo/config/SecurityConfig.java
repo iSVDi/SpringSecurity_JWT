@@ -30,11 +30,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         request -> request.requestMatchers("/login/**", "/register/**")
                                 .permitAll()
-                                .requestMatchers("/admin_only/**").hasRole("ADMIN")
+                                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
+                                .requestMatchers("/demo/**").hasAuthority("USER")
                                 .anyRequest()
                                 .authenticated()
                 ).userDetailsService(userDetailsServiceImp)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
