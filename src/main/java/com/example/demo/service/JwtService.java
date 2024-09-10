@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.model.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoder;
 import io.jsonwebtoken.io.Decoders;
@@ -30,7 +32,11 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        if (extractExpiration(token).before(new Date())) {
+            return true;
+        }
+//        throw new ExpiredJwtException(null, extractAllClaims(token), "Token is expired");
+        throw new JwtException("Token is expired");
     }
 
     private Date extractExpiration(String token) {
@@ -57,7 +63,7 @@ public class JwtService {
         String token = Jwts.builder()
                 .subject(user.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60*1000))
+                .expiration(new Date(System.currentTimeMillis() + + 24 * 60 * 60*1000))
                 .signWith(getSigninKey())
                 .compact();
                 return token;
