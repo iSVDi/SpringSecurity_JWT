@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class AdviceController {
 
-
     @ExceptionHandler({AuthenticationException.class})
     @ResponseBody
     public ResponseEntity<RestError> handleAuthenticationException(Exception e) {
-        RestError re = new RestError("Token is expired");
+        RestError re = new RestError(e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(re);
     }
 }

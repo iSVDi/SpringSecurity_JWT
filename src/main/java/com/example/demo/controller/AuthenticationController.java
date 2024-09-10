@@ -24,7 +24,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody User request
     ) {
-        logger.info("user " + request.getUsername() + " are registered");
+        logger.info("user " + request.getUsername() + " try register");
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
@@ -32,19 +32,19 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody User request
     ) {
-        logger.info("user " + request.getUsername() + " are loginned");
+        logger.info("user " + request.getUsername() + " try login");
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
     @GetMapping("/demo")
     public ResponseEntity<String> demo() {
-        logger.info("Simple user is here");
+        logger.info("Simple user try demo()");
         return ResponseEntity.ok("Hello from secured url");
     }
 
     @GetMapping("/admin_only")
     public ResponseEntity<String> adminOnly() {
-        logger.info("Admin is here");
+        logger.info("Admin try adminOnly()");
         return ResponseEntity.ok("Hello from admin only url");
     }
 

@@ -1,6 +1,7 @@
 package com.example.demo.filter;
 
 import com.example.demo.service.JwtService;
+import com.example.demo.service.LoginAttemptService;
 import com.example.demo.service.UserDetailsServiceImp;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -38,6 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
         String username = jwtService.extractUsername(token);
+
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
