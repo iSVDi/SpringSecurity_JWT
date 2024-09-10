@@ -5,14 +5,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoder;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -32,11 +30,7 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-        if (extractExpiration(token).before(new Date())) {
-            return true;
-        }
-//        throw new ExpiredJwtException(null, extractAllClaims(token), "Token is expired");
-        throw new JwtException("Token is expired");
+        return extractExpiration(token).before(new Date());
     }
 
     private Date extractExpiration(String token) {
@@ -45,7 +39,7 @@ public class JwtService {
 
 
     //TODO how is it work Function<Claims, T>
-    private <T> T extractClaim(String token, Function<Claims, T> resolver){
+    private <T> T extractClaim(String token, Function<Claims, T> resolver) {
         Claims claims = extractAllClaims(token);
         return resolver.apply(claims);
     }
@@ -66,7 +60,7 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + + 24 * 60 * 60*1000))
                 .signWith(getSigninKey())
                 .compact();
-                return token;
+        return token;
     }
 
     private SecretKey getSigninKey() {
